@@ -1,0 +1,20 @@
+- CloudGoat : iam_privesc_by_attachment
+    - https://github.com/RhinoSecurityLabs/cloudgoat/tree/master/cloudgoat/scenarios/aws/iam_privesc_by_attachment
+    
+- 취약점 제목
+    - EC2와 Instance Profile에 대한 권한 과다
+    
+- 카테고리
+    - PassRole 권한 오남용
+    - Instance Profile의 Role 권한 오남용
+    - Keypair 권한 오남용
+    - Instance 생성 권한 오남용
+
+- 취약 상세
+    - 본 시나리오는 AWS IAM(Identity and Access Management) User에게 연결된 Managed Policy 내 iam:RemoveRoleFromInstanceProfile, iam:AddRoleToInstanceProfile 권한을 통해 EC2 Instance에 바인딩되어 있던 Role을 Instance Profile로부터 제거하고 모든 권한을 가진 다른 Role을 Instance Profile에 추가할 수 있습니다. 또한 ec2:CreateKeyPair, ec2:RunInstances 권한을 통해 새 Keypair과 새 Instance를 생성 후 iam:PassRole 권한을 통해 앞서 변경된 Instance Profile을 연결하여 관리자 수준의 권한을 획득합니다.
+    
+- 공격 경로
+    - IAM User → Instance Profile
+    (Managed Policy  iam:RemoveRoleFromInstanceProfile, iam:AddRoleToInstanceProfile)
+    - Instance Profile → EC2
+    (Managed Policy  ec2:CreateKeyPair, ec2:RunInstances, iam:PassRole)
